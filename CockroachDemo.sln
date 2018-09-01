@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2016
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CockroachDemo", "CockroachDemo\CockroachDemo.csproj", "{A1C0350D-6D82-4B4A-B4BD-AAA42A782F13}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A1C0350D-6D82-4B4A-B4BD-AAA42A782F13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1C0350D-6D82-4B4A-B4BD-AAA42A782F13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1C0350D-6D82-4B4A-B4BD-AAA42A782F13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1C0350D-6D82-4B4A-B4BD-AAA42A782F13}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7B1F3CD6-0AE7-4918-800B-B8DDFF526D4D}
+	EndGlobalSection
+EndGlobal
