@@ -1,5 +1,6 @@
 ﻿using Npgsql;
 using System;
+using System.Text;
 
 namespace CockroachDemo
 {
@@ -15,7 +16,10 @@ namespace CockroachDemo
                 conn.Open();
 
                 while(true)
+                {
                     CreatePerson(conn);
+                    Console.WriteLine("{0:HH:mm:ss}: Person Inserted!", DateTime.Now);
+                }
 
                 //// Retrieve all rows
                 //using (var cmd = new NpgsqlCommand("SELECT some_field FROM data", conn))
@@ -27,36 +31,32 @@ namespace CockroachDemo
 
         private static void CreatePerson(NpgsqlConnection conn)
         {
+            var sql = new StringBuilder(1024);
+
             var id = Guid.NewGuid();
 
+            sql.AppendLine($"UPSERT INTO Person (Id, Name) VALUES ('{id}', 'name-{id}');");
+
+            sql.Append("UPSERT INTO Address (Id, PersonId, Name, Street, Number) VALUES ");
+
+            for (var i = 0; i < 100; ++i)
+            {
+                CreateAddress(sql, id);
+            }
+
             using (var cmd = new NpgsqlCommand())
             {
                 cmd.Connection = conn;
-                cmd.CommandText = "INSERT INTO Person (Id, Name) VALUES (@id, @name)";
-                cmd.Parameters.AddWithValue("id", id);
-                cmd.Parameters.AddWithValue("name", "name-" + id);
+                cmd.CommandText = sql.ToString().TrimEnd(',') + ";";
                 cmd.ExecuteNonQuery();
             }
-
-            for (var i = 0; i < 20; ++i)
-                CreateAddress(conn, id);
         }
 
-        private static void CreateAddress(NpgsqlConnection conn, Guid personId)
+        private static void CreateAddress(StringBuilder sql, Guid personId)
         {
-            using (var cmd = new NpgsqlCommand())
-            {
-                var id = Guid.NewGuid();
+            var id = Guid.NewGuid();
 
-                cmd.Connection = conn;
-                cmd.CommandText = "INSERT INTO Address (Id, PersonId, Name, Street, Number) VALUES (@Id, @PersonId, @Name, @Street, @Number)";
-                cmd.Parameters.AddWithValue("id", id);
-                cmd.Parameters.AddWithValue("PersonId", personId);
-                cmd.Parameters.AddWithValue("Name", "Name-" + id);
-                cmd.Parameters.AddWithValue("Street", "Street-" + id);
-                cmd.Parameters.AddWithValue("Number", "Number-" + id);
-                cmd.ExecuteNonQuery();
-            }
+            sql.Append($"('{id}', '{personId}', 'Name-{id}', 'Street-{id}', 'Number-{id}'),");
         }
     }
 }
